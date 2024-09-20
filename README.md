@@ -30,13 +30,13 @@
 
 ## Технологии
 
-    `FastAPI — фреймворк для построения веб-приложений.`
-    `PostgreSQL — база данных для хранения данных о книгах.`
-    `gRPC — сервис для получения данных о книгах.`
-    `RabbitMQ — брокер сообщений для взаимодействия между сервисами.`
-    `Alembic — инструмент для миграций базы данных.`
-    `Docker — контейнеризация приложений.`
-    `Pytest — тестирование.`
+    FastAPI — фреймворк для построения веб-приложений.
+    PostgreSQL — база данных для хранения данных о книгах.
+    gRPC — сервис для получения данных о книгах.
+    RabbitMQ — брокер сообщений для взаимодействия между сервисами.
+    Alembic — инструмент для миграций базы данных.
+    Docker — контейнеризация приложений.
+    Pytest — тестирование.
 
 ## Архитектура
 
@@ -50,86 +50,72 @@
 `PostgreSQL(Хранение данных) <-> FastAPI(REST API + JWT) <-> RabbitMQ(Message Broker) <-> gRPC-сервис(Получение книг) <-> PostgreSQL(Общая база с API)`
 
 
-Установка и запуск проекта
-1. Клонирование репозитория
+## Установка и запуск проекта
+### 1. Клонирование репозитория
 
-bash
+`git clone https://github.com/your-repository/book-management-app.git`
+`cd book-management-app`
 
-git clone https://github.com/your-repository/book-management-app.git
-cd book-management-app
-
-2. Настройка окружения
+### 2. Настройка окружения
 
 Создайте виртуальное окружение и установите зависимости:
 
-bash
+`python3 -m venv venv`
+`source venv/bin/activate`
+`pip install -r requirements.txt`
 
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-3. Настройка переменных окружения
+### 3. Настройка переменных окружения
 
 Создайте файл .env и добавьте следующие переменные:
 
-makefile
+`DATABASE_URL=postgresql://user:password@db:5432/books_db`
+`RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/`
+`JWT_SECRET=your_jwt_secret`
+`JWT_ALGORITHM=HS256`
 
-DATABASE_URL=postgresql://user:password@db:5432/books_db
-RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
-JWT_SECRET=your_jwt_secret
-JWT_ALGORITHM=HS256
-
-4. Запуск проекта с использованием Docker
+### 4. Запуск проекта с использованием Docker
 
 Проект поддерживает контейнеризацию, поэтому вы можете запустить его с помощью Docker Compose:
 
-bash
 
-docker-compose up --build
+`docker-compose up --build`
 
-Docker Compose запустит:
+#### Docker Compose запустит:
 
     Веб-приложение на FastAPI.
     gRPC-сервис.
     PostgreSQL.
     RabbitMQ.
 
-5. Миграции базы данных
+### 5. Миграции базы данных
 
 После первого запуска выполните миграции базы данных с помощью Alembic:
 
-bash
+`docker-compose exec web alembic upgrade head`
 
-docker-compose exec web alembic upgrade head
-
-6. Документация API
+### 6. Документация API
 
 Документация REST API доступна по адресу:
 
-bash
+`http://localhost:8000/docs`
 
-http://localhost:8000/docs
-
-7. gRPC
+### 7. gRPC
 
 Файлы протокола для gRPC-сервиса находятся в директории grpc/protos/. Вы можете использовать их для взаимодействия с gRPC-сервисом.
-8. Тестирование
+
+### 8. Тестирование
 
 Для запуска тестов используйте команду:
 
-bash
+`pytest`
 
-pytest
-
-Дополнительные задания
+## Дополнительные задания
 
     Декоратор @retry — реализован для повторного выполнения функций при возникновении ошибок, связанных с внешними сервисами (например, базы данных или RabbitMQ).
 
-    Асинхронная версия API — один из эндпоинтов реализован в асинхронной версии с использованием asyncio.
+    Реаолизована панель для админов по адресу http://localhost:8000/admin
 
-    Кэширование с Redis — ускоряет получение данных книг.
-
-Как использовать gRPC
+## Как использовать gRPC
 
     Протокол: .proto файлы находятся в папке grpc/protos/.
     Методы:
