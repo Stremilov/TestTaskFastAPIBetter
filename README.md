@@ -69,10 +69,10 @@
 
 Создайте файл .env и добавьте следующие переменные:
 
-`DATABASE_URL=postgresql://user:password@db:5432/books_db`
-`RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/`
-`JWT_SECRET=your_jwt_secret`
-`JWT_ALGORITHM=HS256`
+- `DATABASE_URL=postgresql://user:password@db:5432/books_db`
+- `RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/`
+- `JWT_SECRET=your_jwt_secret`
+- `JWT_ALGORITHM=HS256`
 
 ### 4. Запуск проекта с использованием Docker
 
@@ -83,10 +83,10 @@
 
 #### Docker Compose запустит:
 
-    Веб-приложение на FastAPI.
-    gRPC-сервис.
-    PostgreSQL.
-    RabbitMQ.
+    - Веб-приложение на FastAPI.
+    - gRPC-сервис.
+    - PostgreSQL.
+    - RabbitMQ.
 
 ### 5. Миграции базы данных
 
