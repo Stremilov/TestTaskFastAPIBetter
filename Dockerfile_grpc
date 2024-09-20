@@ -1,0 +1,12 @@
+FROM python:3.9-slim
+
+WORKDIR /grpc_service
+
+COPY grpc_requirements.txt .
+
+RUN pip install --no-cache-dir -r grpc_requirements.txt
+
+COPY /protos .
+COPY /services .
+
+CMD ["python", "services.grpc_server.py"]

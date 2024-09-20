@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi_app
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/books_db
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/  # URL для подключения к RabbitMQ
+    depends_on:
+      - db
+      - rabbitmq  # Добавлена зависимость от RabbitMQ
+
+  db:
+    image: postgres:14
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: books_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  grpc-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: grpc_service
+    ports:
+      - "50051:50051"
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/  # URL для подключения к RabbitMQ
+
+  rabbitmq:
+    image: rabbitmq:3-management  # Версия RabbitMQ с веб-интерфейсом управления
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"  # Порт для RabbitMQ
+      - "15672:15672"  # Порт для веб-интерфейса управления
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  postgres_data:
+  rabbitmq_data:
