@@ -34,7 +34,6 @@ def get_books(db: Session = Depends(get_db)):
 
 
 @async_retry(times=5, delay=2, exceptions=(HTTPException,))
-@async_retry(times=5, delay=2, exceptions=(HTTPException,))
 @app.get("/books/{book_id}", response_model=BookResponse)
 def get_book(book_id: int, db: Session = Depends(get_db)):
     book_repo = BookRepository(db)
